@@ -43,15 +43,29 @@ _marker.addAll(_list);
         title: const Text('GoogleMaps'),
         centerTitle: true,
       ),
-      body: GoogleMap(
-        initialCameraPosition: _kGooglePlex,
-        mapType: MapType.normal,
-        myLocationEnabled: true,
-        compassEnabled: true,
-        markers: Set<Marker>.of(_marker),
-        onMapCreated: (GoogleMapController controller){
-          _controller.complete(controller);
+      body: SafeArea(
+        child: GoogleMap(
+          initialCameraPosition: _kGooglePlex,
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          compassEnabled: true,
+          markers: Set<Marker>.of(_marker),
+          onMapCreated: (GoogleMapController controller){
+            _controller.complete(controller);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          GoogleMapController controller= await _controller.future;
+          controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(20.5937, 78.9629),zoom: 14)
+          ));
+          setState(() {
+
+          });
         },
+        child: Icon(Icons.location_on),
       ),
     );
   }
